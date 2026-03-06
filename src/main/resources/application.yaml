@@ -2,7 +2,7 @@ spring:
   application:
     name: notification_service
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=notification_service
+    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=notification_service
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
   jpa:
