@@ -4,37 +4,46 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="create-user-notification-settings-table" author="Vahe Hovhannisyan">
+    <changeSet id="create-notification-table" author="Vahe Hovhannisyan">
+
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="user_notification_settings" schemaName="agro_trade"/>
+                <tableExists tableName="notification" schemaName="notification_service"/>
             </not>
         </preConditions>
 
-        <createTable tableName="user_notification_settings" schemaName="agro_trade">
+        <createTable tableName="notification" schemaName="notification_service">
             <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="int8">
                 <constraints nullable="false"/>
             </column>
-            <column name="email_enabled" type="boolean" defaultValueBoolean="false">
+            <column name="type" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="sms_enabled" type="boolean" defaultValueBoolean="false">
+            <column name="status" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="inapp_enabled" type="boolean" defaultValueBoolean="false">
+            <column name="title_message" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reference_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reference_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
     </changeSet>
 
-    <changeSet id="user-notification-settings-table-rollback" author="Vahe Hovhannisyan">
+    <changeSet id="notification-table-rollback" author="Vahe Hovhannisyan">
         <rollback>
-            <dropTable tableName="user_notification_settings"
-                       schemaName="agro_trade"
+            <dropTable tableName="notification"
+                       schemaName="notification_service"
                        cascadeConstraints="true"/>
         </rollback>
     </changeSet>
