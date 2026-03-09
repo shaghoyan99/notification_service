@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "notification_settings")
-public class NotificationSettings {
+public class
+NotificationSettings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

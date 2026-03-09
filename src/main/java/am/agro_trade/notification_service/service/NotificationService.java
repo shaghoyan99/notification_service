@@ -1,19 +1,19 @@
 package am.agro_trade.notification_service.service;
 
-import am.agro_trade.notification_service.model.Notification;
+import am.agro_trade.notification_service.dto.NotificationDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface NotificationService {
 
-    void save(Notification notification);
+    void save(NotificationDTO notificationDTO);
 
     void delete(long notificationId);
 
-    List<Notification> findAll();
+    List<NotificationDTO> findAll();
 
-    Optional<Notification> findById(long notificationId);
+    Optional<NotificationDTO> findById(long notificationId);
 
 
 
