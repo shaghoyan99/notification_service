@@ -1,7 +1,8 @@
 package am.agro_trade.notification_service.service;
 
-import jakarta.mail.MessagingException;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SendMailService {
 
     void sendMail(String to, String subject, String content);
