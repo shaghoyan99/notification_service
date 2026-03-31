@@ -27,3 +27,5 @@ spring:
           auth: true
           starttls:
             enable: true
+corporation:
+  email: wahejavawahe@gmail.com

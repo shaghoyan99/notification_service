@@ -1,13 +1,12 @@
 package am.agro_trade.notification_service.service;
 
-import org.springframework.stereotype.Repository;
+import am.agro_trade.notification_service.model.enums.EmailType;
 
-@Repository
 public interface SendMailService {
 
-    void sendMail(String to, String subject, String content);
+    void sendMail(String to, String code, EmailType type);
 
-    void sendVerificationMailHtml(String to, String verifyCode);
+
 
 
 

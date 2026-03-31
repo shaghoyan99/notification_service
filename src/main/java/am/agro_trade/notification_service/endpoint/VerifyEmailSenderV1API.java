@@ -5,8 +5,10 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/notification-service/api/v1/notifications")
+@RestController
 /**
  * API for sending verification codes to user email.
  */
@@ -16,7 +18,7 @@ public interface VerifyEmailSenderV1API {
      *
      * @param request contains user's email and verification code
      */
-    @PostMapping("/verification-code")
-    void sendVerificationCode(@RequestBody @Valid VerificationRequest request);
+    @PostMapping("/send")
+    void sendEmail(@RequestBody @Valid VerificationRequest request);
 
 }
