@@ -1,6 +1,6 @@
 package am.agro_trade.notification_service.model;
 
-import am.agro_trade.notification_service.model.enums.ReferenceType;
+import am.agro_trade.notification_service.model.enums.EmailType;
 import am.agro_trade.notification_service.model.enums.Status;
 import am.agro_trade.notification_service.model.enums.Type;
 import jakarta.persistence.*;
@@ -32,7 +32,7 @@ public class Notification {
     private String titleMessage;
 
     @Enumerated(EnumType.STRING)
-    private ReferenceType referenceType;
+    private EmailType referenceType;
 
     private long referenceId;
 

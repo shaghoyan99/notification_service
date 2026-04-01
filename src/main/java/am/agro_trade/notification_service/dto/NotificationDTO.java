@@ -1,6 +1,6 @@
 package am.agro_trade.notification_service.dto;
 
-import am.agro_trade.notification_service.model.enums.ReferenceType;
+import am.agro_trade.notification_service.model.enums.EmailType;
 import am.agro_trade.notification_service.model.enums.Status;
 import am.agro_trade.notification_service.model.enums.Type;
 
@@ -15,7 +15,7 @@ public class NotificationDTO {
 
     private String titleMessage;
 
-    private ReferenceType referenceType;
+    private EmailType referenceType;
 
     private long referenceId;
 

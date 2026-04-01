@@ -1,12 +1,12 @@
 package am.agro_trade.notification_service.service.impl;
 
-
 import am.agro_trade.notification_service.exception.EmailSendException;
+import am.agro_trade.notification_service.model.enums.EmailType;
 import am.agro_trade.notification_service.service.SendMailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -19,36 +19,54 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class SendEmailService implements SendMailService {
-
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
 
-    @Override
-    @Async
-    public void sendMail(String to, String subject, String content) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(to);
-        simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(content);
-        emailSender.send(simpleMailMessage);
-    }
+    @Value("${corporation.email}")
+    private String corporationEmail;
 
     @Override
     @Async
-    public void sendVerificationMailHtml(String to, String verifyCode) {
-        final Context ctx = new Context(Locale.ENGLISH);
-        ctx.setVariable("code", verifyCode);
-        final MimeMessage mimeMessage = emailSender.createMimeMessage();
+    public void sendMail(String to, String code, EmailType type) {
+        Context ctx = new Context(Locale.ENGLISH);
+        ctx.setVariable("code", code);
+
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
-            final MimeMessageHelper message =
-                    new MimeMessageHelper(mimeMessage, false, "UTF-8"); // true = multipart
-            message.setSubject("Please verify your email address");
-            message.setFrom("wahejavawahe@gmail.com");
+            MimeMessageHelper message =
+                    new MimeMessageHelper(mimeMessage, false, "UTF-8");
+
+            message.setFrom(corporationEmail);
             message.setTo(to);
-            final String htmlContent = templateEngine.process("mail/verificationMailTemplate", ctx);
-            message.setText(htmlContent, true);
+
+            String subject;
+            String template;
+
+            switch (type) {
+                case VERIFICATION -> {
+                    subject = "Verify your email";
+                    template = "mail/verificationMailTemplate";
+                    ctx.setVariable("verifyLink", "http://localhost:8080/reset?code=" + code);
+                }
+                case WELCOME -> {
+                    subject = "Welcome 🎉";
+                    template = "mail/welcomeMailTemplate";
+                    ctx.setVariable("appLink", "http://localhost:8080/");
+                }
+                case RESET_PASSWORD -> {
+                    subject = "Reset your password";
+                    template = "mail/resetPasswordMailTemplate";
+                    ctx.setVariable("resetLink",  "http://localhost:8080/reset?code=" + code);
+                }
+                default -> throw new IllegalArgumentException("Unknown email type");
+            }
+            String html = templateEngine.process(template, ctx);
+            message.setSubject(subject);
+            message.setText(html, true);
+
             emailSender.send(mimeMessage);
-        }catch (MessagingException e){
+
+        } catch (MessagingException e) {
             throw new EmailSendException("Failed to send email to " + to, e);
         }
     }

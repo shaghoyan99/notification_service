@@ -1,10 +1,13 @@
 package am.agro_trade.notification_service.model.enums;
 
-public enum ReferenceType {
+public enum EmailType {
 
     ORDER,
     PAYMENT,
     USER,
     MESSAGE,
-    PRODUCT
+    PRODUCT,
+    VERIFICATION,
+    WELCOME,
+    RESET_PASSWORD
 }
