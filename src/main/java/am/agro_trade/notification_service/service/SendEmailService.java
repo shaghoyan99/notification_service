@@ -1,8 +1,7 @@
-package am.agro_trade.notification_service.service.impl;
+package am.agro_trade.notification_service.service;
 
 import am.agro_trade.notification_service.exception.EmailSendException;
 import am.agro_trade.notification_service.model.enums.EmailType;
-import am.agro_trade.notification_service.service.SendMailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
