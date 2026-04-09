@@ -1,6 +1,6 @@
 package am.agro_trade.notification_service.endpoint;
 
-import am.agro_trade.notification_service.dto.request.VerificationRequest;
+import am.agro_trade.notification_service.dto.request.SendNotificationRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +19,6 @@ public interface VerifyEmailSenderV1API {
      * @param request contains user's email and verification code
      */
     @PostMapping("/send")
-    void sendEmail(@RequestBody @Valid VerificationRequest request);
+    void sendEmail(@RequestBody @Valid SendNotificationRequest request);
 
 }

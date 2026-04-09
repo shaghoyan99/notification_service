@@ -18,9 +18,11 @@ NotificationSettings {
 
     private long userId;
 
+    private String email;
+
     private boolean emailEnabled;
 
     private boolean smsEnabled;
 
-    private boolean inappEnabled;
+    private boolean inAppEnabled;
 }

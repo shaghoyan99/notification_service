@@ -33,6 +33,4 @@ public class EmailOutbox {
     private int retries;
 
     private LocalDateTime createdAt;
-
-    private LocalDateTime sentAt;
 }

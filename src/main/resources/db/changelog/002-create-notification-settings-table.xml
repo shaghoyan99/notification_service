@@ -18,13 +18,16 @@
             <column name="user_id" type="int8">
                 <constraints nullable="false"/>
             </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="email_enabled" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="sms_enabled" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="inapp_enabled" type="boolean" defaultValueBoolean="false">
+            <column name="inApp_enabled" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </createTable>

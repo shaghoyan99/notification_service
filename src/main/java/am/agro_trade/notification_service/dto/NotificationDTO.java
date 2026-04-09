@@ -7,6 +7,7 @@ import am.agro_trade.notification_service.model.enums.Type;
 import java.time.LocalDateTime;
 
 public class NotificationDTO {
+
     private  long userId;
 
     private Type type;

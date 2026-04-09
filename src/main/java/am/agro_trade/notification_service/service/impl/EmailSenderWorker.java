@@ -1,4 +1,4 @@
-package am.agro_trade.notification_service.service;
+package am.agro_trade.notification_service.service.impl;
 
 import am.agro_trade.notification_service.model.enums.Status;
 import am.agro_trade.notification_service.repository.EmailOutboxRepository;
@@ -12,23 +12,21 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EmailSenderWorker {
-    private final EmailOutboxRepository repository;
-    private final SendEmailService sendEmailService;
 
-    @Scheduled(fixedDelay = 5000)
+    private final EmailOutboxRepository repository;
+    private final SendEmailImpl sendEmailImpl;
+
+    @Scheduled(cron = "0 */10 * * * *")
     public void processEmails() {
-        var emails = repository.findTop10ByStatusInOrderByCreatedAtAsc(
-                List.of(Status.NEW,Status.FAILED)
-        );
+        var emails = repository.findAllFailed();
         for (var email : emails) {
             try {
-                sendEmailService.sendMail(
+                sendEmailImpl.sendMail(
                         email.getToEmail(),
                         email.getCode(),
                         email.getType()
                 );
                 email.setStatus(Status.SENT);
-                email.setSentAt(LocalDateTime.now());
             } catch (Exception e) {
                 email.setStatus(Status.FAILED);
                 email.setRetries(email.getRetries() + 1);
