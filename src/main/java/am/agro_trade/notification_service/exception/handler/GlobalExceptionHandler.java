@@ -1,28 +1,37 @@
 package am.agro_trade.notification_service.exception.handler;
 
-import am.agro_trade.notification_service.dto.response.ErrorResponse;
-import jakarta.mail.MessagingException;
+import am.agro_trade.notification_service.dto.response.ValidationErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MessagingException.class)
-    public ResponseEntity<ErrorResponse> handleMessagingException(MessagingException ex, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                "Failed to send email: " + ex.getMessage(),
-                request.getRequestURI()
-        );
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationErrorResponse> handleValidationErrors(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request
+    ) {
+        List<ValidationErrorResponse.FieldError> details = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fieldError -> new ValidationErrorResponse.FieldError(fieldError.getField(), fieldError.getDefaultMessage()))
+                .toList();
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        ValidationErrorResponse response = new ValidationErrorResponse();
+        response.setTimestamp(Instant.now());
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setMessage("Validation Failed");
+        response.setPath(request.getRequestURI());
+        response.setDetails(details);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }
