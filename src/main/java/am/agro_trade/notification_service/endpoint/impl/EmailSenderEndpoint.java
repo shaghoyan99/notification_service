@@ -13,7 +13,6 @@ public class EmailSenderEndpoint implements VerifyEmailSenderV1API {
 
     private final SendMailService sendMailService;
 
-
     @Override
     public void sendEmail(@Valid SendNotificationRequest request) {
         sendMailService.sendMail(
