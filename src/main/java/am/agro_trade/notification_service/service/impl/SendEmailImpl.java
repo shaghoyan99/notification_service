@@ -2,6 +2,8 @@ package am.agro_trade.notification_service.service.impl;
 
 import am.agro_trade.notification_service.exception.EmailSendException;
 import am.agro_trade.notification_service.model.enums.EmailType;
+import am.agro_trade.notification_service.model.enums.Status;
+import am.agro_trade.notification_service.service.EmailOutboxService;
 import am.agro_trade.notification_service.service.SendMailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -18,12 +20,15 @@ import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
-public class SendEmailService implements SendMailService {
+public class SendEmailImpl implements SendMailService {
+
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
+    private final EmailOutboxService emailOutboxService;
 
     @Value("${corporation.email}")
     private String corporationEmail;
+
 
     @Override
     @Async
@@ -65,8 +70,9 @@ public class SendEmailService implements SendMailService {
             message.setText(html, true);
 
             emailSender.send(mimeMessage);
-
+            emailOutboxService.save(to,code,type, Status.SENT);
         } catch (MessagingException e) {
+            emailOutboxService.save(to,code,type, Status.FAILED);
             throw new EmailSendException("Failed to send email to " + to, e);
         }
     }

@@ -6,8 +6,4 @@ public interface SendMailService {
 
     void sendMail(String to, String code, EmailType type);
 
-
-
-
-
 }

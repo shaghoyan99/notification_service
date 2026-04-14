@@ -1,6 +1,6 @@
 package am.agro_trade.notification_service.endpoint.impl;
 
-import am.agro_trade.notification_service.dto.request.VerificationRequest;
+import am.agro_trade.notification_service.dto.request.SendNotificationRequest;
 import am.agro_trade.notification_service.endpoint.VerifyEmailSenderV1API;
 import am.agro_trade.notification_service.service.SendMailService;
 import jakarta.validation.Valid;
@@ -13,9 +13,8 @@ public class EmailSenderEndpoint implements VerifyEmailSenderV1API {
 
     private final SendMailService sendMailService;
 
-
     @Override
-    public void sendEmail(@Valid VerificationRequest request) {
+    public void sendEmail(@Valid SendNotificationRequest request) {
         sendMailService.sendMail(
                 request.email(),
                 request.code(),
