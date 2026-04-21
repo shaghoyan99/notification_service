@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
@@ -26,6 +26,14 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="url" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="product_name" type="VARCHAR(50)">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="type" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
@@ -34,7 +42,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="retries" type="INT" defaultValueNumeric="0">
+            <column name="retries" type="INT">
                 <constraints nullable="false"/>
             </column>
 

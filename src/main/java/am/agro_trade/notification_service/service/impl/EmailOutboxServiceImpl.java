@@ -17,11 +17,18 @@ public class EmailOutboxServiceImpl implements EmailOutboxService {
 
     private final EmailOutboxRepository repository;
 
-    public void save(String to, String code, EmailType type,Status status) {
+    public void save(String to,
+                     String code,
+                     String url,
+                     String productName,
+                     EmailType type,
+                     Status status) {
 
         EmailOutbox email = new EmailOutbox();
         email.setToEmail(to);
         email.setCode(code);
+        email.setUrl(url);
+        email.setProductName(productName);
         email.setType(type);
         email.setRetries(0);
         email.setStatus(status);

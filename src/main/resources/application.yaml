@@ -29,3 +29,6 @@ spring:
             enable: true
 corporation:
   email: wahejavawahe@gmail.com
+
+server:
+  port: 8082

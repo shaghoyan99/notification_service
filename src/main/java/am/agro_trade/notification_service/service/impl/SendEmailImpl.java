@@ -32,48 +32,102 @@ public class SendEmailImpl implements SendMailService {
 
     @Override
     @Async
-    public void sendMail(String to, String code, EmailType type) {
-        Context ctx = new Context(Locale.ENGLISH);
-        ctx.setVariable("code", code);
-
-        MimeMessage mimeMessage = emailSender.createMimeMessage();
+    public void sendMail(String to, String code, String url, String productName, EmailType type) {
         try {
-            MimeMessageHelper message =
-                    new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            MimeMessage mimeMessage = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 
-            message.setFrom(corporationEmail);
-            message.setTo(to);
+            helper.setFrom(corporationEmail);
+            helper.setTo(to);
 
-            String subject;
-            String template;
+            EmailTemplateData templateData = prepareTemplateData(type, code, url,productName);
 
-            switch (type) {
-                case VERIFICATION -> {
-                    subject = "Verify your email";
-                    template = "mail/verificationMailTemplate";
-                    ctx.setVariable("verifyLink", "http://localhost:8080/reset?code=" + code);
-                }
-                case WELCOME -> {
-                    subject = "Welcome 🎉";
-                    template = "mail/welcomeMailTemplate";
-                    ctx.setVariable("appLink", "http://localhost:8080/");
-                }
-                case RESET_PASSWORD -> {
-                    subject = "Reset your password";
-                    template = "mail/resetPasswordMailTemplate";
-                    ctx.setVariable("resetLink",  "http://localhost:8080/reset?code=" + code);
-                }
-                default -> throw new IllegalArgumentException("Unknown email type");
-            }
-            String html = templateEngine.process(template, ctx);
-            message.setSubject(subject);
-            message.setText(html, true);
+            String htmlContent = templateEngine.process(templateData.templateName(), templateData.context());
+
+            helper.setSubject(templateData.subject());
+            helper.setText(htmlContent, true);
 
             emailSender.send(mimeMessage);
-            emailOutboxService.save(to,code,type, Status.SENT);
+
+            emailOutboxService.save(to, code, url,productName, type, Status.SENT);
+
         } catch (MessagingException e) {
-            emailOutboxService.save(to,code,type, Status.FAILED);
+            emailOutboxService.save(to, code, url,productName, type, Status.FAILED);
             throw new EmailSendException("Failed to send email to " + to, e);
         }
+    }
+
+    private EmailTemplateData prepareTemplateData(EmailType type,
+                                                  String code,
+                                                  String url,
+                                                  String productName) {
+
+        Context ctx = new Context(Locale.ENGLISH);
+
+        if (code != null) {
+            ctx.setVariable("code", code);
+        }
+        if (url != null) {
+            ctx.setVariable("orderUrl", url);
+        }
+        if (productName != null) {
+            ctx.setVariable("productName", productName);
+        }
+
+        return switch (type) {
+            case VERIFY -> createVerificationData(ctx, code);
+            case WELCOME -> createWelcomeData(ctx);
+            case RESET_PASSWORD -> createResetPasswordData(ctx, code);
+            case ORDER_OPENED -> createOrderOpenedData(ctx);
+            default -> throw new IllegalArgumentException("Unknown email type: " + type);
+        };
+    }
+
+    private EmailTemplateData createOrderOpenedData(Context ctx) {
+        return new EmailTemplateData(
+                "New Order Created",
+                "mail/orderOpenedMailTemplate",
+                ctx);
+    }
+
+    private EmailTemplateData createVerificationData(Context ctx, String code) {
+        String verifyLink = "http://localhost:8080/agro-trade-service/api/v1/auth/verify?code=" + code;
+
+        ctx.setVariable("verifyLink", verifyLink);
+
+        return new EmailTemplateData(
+                "Verify your email",
+                "mail/verificationMailTemplate",
+                ctx
+        );
+    }
+
+    private EmailTemplateData createWelcomeData(Context ctx) {
+        ctx.setVariable("appLink", "http://localhost:8080/");
+
+        return new EmailTemplateData(
+                "Welcome 🎉",
+                "mail/welcomeMailTemplate",
+                ctx
+        );
+    }
+
+    private EmailTemplateData createResetPasswordData(Context ctx, String code) {
+        String resetLink = "http://localhost:8080/agro-trade-service/api/v1/auth/resend-code?code=" + code;
+
+        ctx.setVariable("resetLink", resetLink);
+
+        return new EmailTemplateData(
+                "Reset your password",
+                "mail/resetPasswordMailTemplate",
+                ctx
+        );
+    }
+
+    private record EmailTemplateData(
+            String subject,
+            String templateName,
+            Context context
+    ) {
     }
 }
