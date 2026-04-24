@@ -11,12 +11,12 @@ public interface EmailOutboxService {
     /**
      * Saves an email message in the outbox.
      *
-     * @param to recipient email address
-     * @param code verification or business code associated with the email
-     * @param url related URL included in the email
+     * @param to          recipient email address
+     * @param code        verification or business code associated with the email
+     * @param url         related URL included in the email
      * @param productName product name included in the email content
-     * @param type email template type
-     * @param status current delivery status stored for the outbox entry
+     * @param type        email template type
+     * @param status      current delivery status stored for the outbox entry
      */
     void save(String to,
               String code,

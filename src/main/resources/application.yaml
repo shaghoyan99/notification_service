@@ -32,3 +32,11 @@ corporation:
 
 server:
   port: 8082
+
+app:
+  frontend:
+    base-url: http://localhost:8080/
+  auth:
+    base-url: http://localhost:8080/agro-trade-service
+    verify-path: /api/v1/auth/verify
+    resend-code-path: /api/v1/auth/resend-code
