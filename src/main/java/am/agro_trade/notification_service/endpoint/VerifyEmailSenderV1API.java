@@ -41,7 +41,7 @@ public interface VerifyEmailSenderV1API {
             )
     })
     @PostMapping("/send/verify")
-    void sendVerifyEmail(@Valid @org.springframework.web.bind.annotation.RequestBody VerifyNotificationRequest request);
+    void sendVerifyEmail(@Valid @RequestBody VerifyNotificationRequest request);
 
     @Operation(
             summary = "Send reset password notification",
@@ -63,7 +63,7 @@ public interface VerifyEmailSenderV1API {
             )
     })
     @PostMapping("/send/reset-password")
-    void sendResetPasswordEmail(@Valid @org.springframework.web.bind.annotation.RequestBody VerifyNotificationRequest request);
+    void sendResetPasswordEmail(@Valid @RequestBody VerifyNotificationRequest request);
 
     @Operation(
             summary = "Send order opened notification",
@@ -85,7 +85,7 @@ public interface VerifyEmailSenderV1API {
             )
     })
     @PostMapping("/send/order-opened")
-    void sendOrderOpenedEmail(@Valid @org.springframework.web.bind.annotation.RequestBody OrderNotificationRequest request);
+    void sendOrderOpenedEmail(@Valid @RequestBody OrderNotificationRequest request);
 
     @Operation(
             summary = "Send welcome notification",
@@ -107,7 +107,7 @@ public interface VerifyEmailSenderV1API {
             )
     })
     @PostMapping("/send/welcome")
-    void sendWelcomeEmail(@Valid @org.springframework.web.bind.annotation.RequestBody WelcomeNotificationRequest request);
+    void sendWelcomeEmail(@Valid @RequestBody WelcomeNotificationRequest request);
 
     @Operation(
             summary = "Save notification settings",
@@ -130,7 +130,7 @@ public interface VerifyEmailSenderV1API {
     })
     @PostMapping("/settings/save")
     void saveNotificationSettings(
-            @Valid @org.springframework.web.bind.annotation.RequestBody SendNotificationSettingsRequest request
+            @Valid @RequestBody SendNotificationSettingsRequest request
     );
 
 }
