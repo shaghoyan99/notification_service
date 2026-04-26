@@ -13,37 +13,33 @@
 
                 <tr>
                     <td align="center">
-                        <h2 style="margin:0; color:#222;">Reset your password</h2>
+                        <h1 style="margin:0; color:#111;">New Order Created 📦</h1>
                     </td>
                 </tr>
 
                 <tr>
                     <td style="padding:20px 0; color:#555; text-align:center;">
-                        We received a request to reset your password.
+                        A new order has been successfully created.
                     </td>
                 </tr>
-
                 <tr>
-                    <td align="center">
-                        <div style="font-size:30px; font-weight:bold; color:#ef4444; letter-spacing:4px;">
-                            <span th:text="${code}"></span>
-                        </div>
+                    <td align="center" style="padding:10px 0; color:#111;">
+                        <strong>Product:</strong>
+                        <span th:text="${productName}">Product Name</span>
                     </td>
                 </tr>
-
                 <tr>
-                    <td align="center" style="padding:30px;">
-                        <a style="background:#ef4444; color:#fff; padding:14px 28px;
+                    <td align="center" style="padding:20px;">
+                        <a style="background:#3b82f6; color:#fff; padding:14px 28px;
                                   text-decoration:none; border-radius:8px;"
-                           th:href="${resetLink}">
-                            Reset Password
+                           th:href="${orderUrl}">
+                            View Order
                         </a>
                     </td>
                 </tr>
-
                 <tr>
-                    <td style="color:#999; font-size:12px; text-align:center;">
-                        If you didn’t request this, secure your account.
+                    <td style="padding-top:20px; color:#777; text-align:center;">
+                        You can track the order and communicate with participants anytime.
                     </td>
                 </tr>
 

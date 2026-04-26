@@ -6,9 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class EmailSenderWorker {
@@ -16,7 +13,7 @@ public class EmailSenderWorker {
     private final EmailOutboxRepository repository;
     private final SendEmailImpl sendEmailImpl;
 
-    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void processEmails() {
         var emails = repository.findAllFailed();
         for (var email : emails) {
@@ -24,6 +21,8 @@ public class EmailSenderWorker {
                 sendEmailImpl.sendMail(
                         email.getToEmail(),
                         email.getCode(),
+                        email.getUrl(),
+                        email.getProductName(),
                         email.getType()
                 );
                 email.setStatus(Status.SENT);
