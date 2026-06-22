@@ -12,7 +12,7 @@
             </not>
         </preConditions>
 
-        <createTable tableName="email_outbox">
+        <createTable tableName="email_outbox" schemaName="notification_service">
 
             <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
