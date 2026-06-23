@@ -39,7 +39,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      topics: email-notification
+      topics: email-notification-events
       group-id: notification-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer

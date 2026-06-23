@@ -33,7 +33,6 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres?currentSchema=notification_service
       SPRING_LIQUIBASE_URL: jdbc:postgresql://postgres:5432/postgres?currentSchema=notification_service
-      # ՈՒՂՂՎԱԾ Է. Այս երկու տողը պարտադիր պետք է լինեն, որպեսզի application.yaml-ը տեսնի դրանք
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
 
