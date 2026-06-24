@@ -2,31 +2,52 @@ spring:
   application:
     name: notification_service
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=notification_service
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/postgres?currentSchema=notification_service}
+    driver-class-name: org.postgresql.Driver
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
   jpa:
     show-sql: false
     hibernate:
       ddl-auto: none
+    database: PostgreSQL
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         default_schema: notification_service
+    open-in-view: false
   liquibase:
     enabled: true
     change-log: classpath:db/master.xml
+    default-schema: notification_service
+    liquibase-schema: notification_service
+    url: ${SPRING_LIQUIBASE_URL:jdbc:postgresql://localhost:5433/postgres?currentSchema=notification_service}
+    user: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
   mail:
     host: smtp.gmail.com
     port: 587
     username: wahejavawahe@gmail.com
-    password: u o d e p j n b y j s g h r j q
+    password: uodepjnbyjsghrjq
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      topics: email-notification-events
+      group-id: notification-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: "am.agro_trade.notification_service.dto.EmailNotificationEvent"
+
 corporation:
   email: wahejavawahe@gmail.com
 
